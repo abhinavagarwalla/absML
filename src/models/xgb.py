@@ -1,0 +1,72 @@
+from hyperopt import hp
+import xgboost as xgb
+from settings import *
+
+__author__ = 'abhinav'
+
+# Extreme Gradient Boosting
+xgbs = {'XGBClassifier': xgb.XGBClassifier(learning_rate=0.275,
+                                           silent=True,
+                                           objective="multi:softmax",
+                                           nthread=-1,
+                                           gamma=0.85,
+                                           min_child_weight=5,
+                                           max_delta_step=1,
+                                           subsample=0.85,
+                                           colsample_bytree=0.70,
+                                           colsample_bylevel=1,
+                                           reg_alpha=0.5,
+                                           reg_lambda=1,
+                                           scale_pos_weight=1,
+                                           base_score=0.5,
+                                           seed=configs['seed'],
+                                           missing=None,
+                                           n_estimators=360,
+                                           max_depth=6),
+        'XGBClassifier2': xgb.XGBClassifier(learning_rate=0.275,
+                                            silent=True,
+                                            objective="multi:softmax",
+                                            nthread=-1,
+                                            gamma=0.85,
+                                            min_child_weight=5,
+                                            max_delta_step=1,
+                                            subsample=0.85,
+                                            colsample_bytree=0.70,
+                                            colsample_bylevel=1,
+                                            reg_alpha=1.5,
+                                            reg_lambda=1.5,
+                                            scale_pos_weight=1,
+                                            base_score=0.5,
+                                            seed=configs['seed'],
+                                            missing=None,
+                                            n_estimators=360,
+                                            max_depth=15),
+        'XGBClassifier3': xgb.XGBClassifier(learning_rate=0.275,
+                                            silent=True,
+                                            objective="multi:softmax",
+                                            nthread=-1,
+                                            gamma=0.85,
+                                            min_child_weight=5,
+                                            max_delta_step=1,
+                                            subsample=0.85,
+                                            colsample_bytree=0.70,
+                                            colsample_bylevel=1,
+                                            reg_alpha=0.5,
+                                            reg_lambda=0.5,
+                                            scale_pos_weight=1,
+                                            base_score=0.5,
+                                            seed=configs['seed'],
+                                            missing=None,
+                                            n_estimators=360,
+                                            max_depth=6)
+        }
+
+h_param_grid = {'max_depth': hp.quniform('max_depth', 1, 13, 1),
+                'subsample': hp.quniform('subsample', 0.5, 1, 0.05),
+                'learning_rate': hp.quniform('learning_rate', 0.025, 0.5, 0.025),
+                'gamma': hp.quniform('gamma', 0.5, 1, 0.05),
+                'colsample_bytree': hp.quniform('colsample_bytree', 0.5, 1, 0.05),
+                'n_estimators': hp.quniform('n_estimators', 100, 1000, 1),
+                }
+to_int_params = ['n_estimators', 'max_depth']
+level0 = xgbs['XGBClassifier']
